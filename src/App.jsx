@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Message from "./Message.jsx";
 import ChatBar from "./ChatBar.jsx"
 import MessageList from "./MessageList.jsx"
 class App extends Component {
@@ -16,6 +15,7 @@ class App extends Component {
     content: "No, I think you lost them. You lost your marbles Bob. You lost them for good",
   id:345}]
     };
+    this.addNewMessage = this.addNewMessage.bind(this);
   }
   componentDidMount(){
     console.log("componentDidMount <App />");
@@ -26,8 +26,10 @@ class App extends Component {
       this.setState({messages:messages})
     }, 3000);
   }
-addNewMessage(userName, content){
-  const message = {id,userName, content}
+addNewMessage(content){
+  const oldMessages = this.state.messages;
+  let newMessages = [...oldMessages, {userName:this.state.currentUser.name, content:content}];
+  this.setState({messages:newMessages})
 
 }
 
@@ -38,7 +40,7 @@ addNewMessage(userName, content){
 </nav>
 
 <MessageList messages={this.state.messages} currentUser={this.state.currentUser}/>
-<ChatBar currentUser={this.state.currentUser} newMessage={this.addNewMessage.bind(this)}/>
+<ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage}/>
 </div>
     );
   }
