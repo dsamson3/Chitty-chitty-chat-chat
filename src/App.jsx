@@ -23,9 +23,15 @@ class App extends Component {
     ws.onopen = function(event){
       console.log('Connected to Server');
     };
-      this.socket.onmessage = (event)=>{
+      ws.onmessage = (event)=>{
         const receivedMessage = JSON.parse(event.data);
-        this.setState({ messages: this.state.messages.concat(receivedMessage)})
+        console.log("Message", receivedMessage);
+        const messages = [...this.state.messages, 
+       { userName : receivedMessage.userName,
+        content: receivedMessage.content
+
+          }]
+        this.setState({ messages: messages});
       }
 
     console.log("componentDidMount <App />");
@@ -37,9 +43,11 @@ class App extends Component {
     }, 3000);
   }
 addNewMessage(content){
-  const oldMessages = this.state.messages;
-  let newMessages = [...oldMessages, {userName:this.state.currentUser.name, content:content}];
-  this.setState({messages:newMessages})
+  const message ={
+    userName:this.state.currentUser,
+    content
+  }
+  this.socket.send(JSON.stringify(message))
 
 }
 

@@ -19,13 +19,17 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
-  wss.on('message', (message)=>{
-      console.log("[Server] Received Message;", message);
+  ws.on('message', function incoming(message){
+      const messageObj = JSON.parse(message);
+      console.log("[Server] Received Message;", messageObj);
+      const outGoing = {
+          userName: messageObj.userName.name,
+          content: messageObj.content
+      };
       //broadcast to everybody
     wss.clients.forEach(function each(client){
-        if(client !== ws && client.readyState=== WebSocket.OPEN){
-            client.send(message);
-        }
+            client.send(JSON.stringify(outGoing));
+    
     });
 
   });
