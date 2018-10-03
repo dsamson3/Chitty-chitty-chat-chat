@@ -1,6 +1,6 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
-
+const uuid = require('uuid');
 // Set the port to 3001
 const PORT = 3001;
 
@@ -23,6 +23,7 @@ wss.on('connection', (ws) => {
       const messageObj = JSON.parse(message);
       console.log("[Server] Received Message;", messageObj);
       const outGoing = {
+          id:uuid(),
           userName: messageObj.userName.name,
           content: messageObj.content
       };

@@ -1,19 +1,13 @@
 import React, {Component} from 'react';
 import ChatBar from "./ChatBar.jsx"
 import MessageList from "./MessageList.jsx"
+
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       currentUser: {name:'Bob'},
-      messages: [{
-        userName: "Bob",
-        content:
-        "have you seen my marbles",
-      id: 123},
-      {userName:"Anonymous",
-    content: "No, I think you lost them. You lost your marbles Bob. You lost them for good",
-  id:345}]
+      messages: []
     };
     this.addNewMessage = this.addNewMessage.bind(this);
   }
@@ -27,7 +21,8 @@ class App extends Component {
         const receivedMessage = JSON.parse(event.data);
         console.log("Message", receivedMessage);
         const messages = [...this.state.messages, 
-       { userName : receivedMessage.userName,
+       { id: receivedMessage.id,
+         userName : receivedMessage.userName,
         content: receivedMessage.content
 
           }]
@@ -42,9 +37,14 @@ class App extends Component {
       this.setState({messages:messages})
     }, 3000);
   }
-addNewMessage(content){
+addNewMessage(userName, content){
+  let oldName = this.state.currentUser.name;
+  if(oldName !== userName){
+  this.setState({currentUser:{name:userName}})
+  }
   const message ={
-    userName:this.state.currentUser,
+    type,
+    userName:{name:userName},
     content
   }
   this.socket.send(JSON.stringify(message))
