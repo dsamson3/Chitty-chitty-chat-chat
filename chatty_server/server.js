@@ -19,6 +19,17 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  wss.on('message', (message)=>{
+      console.log("[Server] Received Message;", message);
+      //broadcast to everybody
+    wss.clients.forEach(function each(client){
+        if(client !== ws && client.readyState=== WebSocket.OPEN){
+            client.send(message);
+        }
+    });
+
+  });
+
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
 });

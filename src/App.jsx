@@ -18,6 +18,16 @@ class App extends Component {
     this.addNewMessage = this.addNewMessage.bind(this);
   }
   componentDidMount(){
+    const ws = new WebSocket("ws://localhost:3001");
+    this.socket = ws;
+    ws.onopen = function(event){
+      console.log('Connected to Server');
+    };
+      this.socket.onmessage = (event)=>{
+        const receivedMessage = JSON.parse(event.data);
+        this.setState({ messages: this.state.messages.concat(receivedMessage)})
+      }
+
     console.log("componentDidMount <App />");
     setTimeout(() => {
       console.log("Simulating incoming message");
