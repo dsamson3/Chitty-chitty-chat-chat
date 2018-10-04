@@ -5,7 +5,6 @@ class MessageList extends Component {
     
         const post =this.props.messages.map(post => {
             console.log("rendering<Message>")
-            console.dir(post);
             return <Message
             key={post.id}
             type={post.type}
