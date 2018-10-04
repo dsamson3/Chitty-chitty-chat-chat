@@ -3,7 +3,7 @@ class ChatBar extends Component{
     constructor(props){
         super(props);
         this.state ={
-            userName: this.props.currentUser.name,
+            userName: this.props.currentUser,
             content:""
         };
         this.contentMessage = this.contentMessage.bind(this);
@@ -25,17 +25,17 @@ class ChatBar extends Component{
     }
     enterPressed(e) {
         if(e.key === "Enter"){
-            this.props.addNewMessage(this.state.userName,this.state.content)
+            this.props.addNewMessage("postMessage",this.state.userName,this.state.content)
             this.setState({content: ""})
         }
     }
     render(){
     return (<footer className="chatbar">
     <input className="chatbar-username" 
-    placeholder={this.props.currentUser.name} 
+    placeholder={this.props.currentUser} 
     value={this.state.userName}
     onChange={this.userNameChange}
-    onKeyDown={this.userNameeKeyPress}/>
+    />
 
         <input className="chatbar-message" 
         placeholder="Type a message and hit ENTER" 

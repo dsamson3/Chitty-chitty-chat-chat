@@ -7,6 +7,7 @@ class MessageList extends Component {
             console.log("rendering<Message>")
             return <Message
             key={post.id}
+            type={post.type}
             userName={post.userName}
             message= {post.content}
        /> })

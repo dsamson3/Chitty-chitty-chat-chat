@@ -6,7 +6,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      currentUser: {name:'Bob'},
+      userCount:0,
+      currentUser:'Bob',
       messages: []
     };
     this.addNewMessage = this.addNewMessage.bind(this);
@@ -21,7 +22,8 @@ class App extends Component {
         const receivedMessage = JSON.parse(event.data);
         console.log("Message", receivedMessage);
         const messages = [...this.state.messages, 
-       { id: receivedMessage.id,
+       { type:receivedMessage.type,
+         id: receivedMessage.id,
          userName : receivedMessage.userName,
         content: receivedMessage.content
 
@@ -30,21 +32,20 @@ class App extends Component {
       }
 
     console.log("componentDidMount <App />");
-    setTimeout(() => {
-      console.log("Simulating incoming message");
-      const newMessage ={id:3, userName:"Michelle", content:"Hello there!"};
-      const messages= this.state.messages.concat(newMessage);
-      this.setState({messages:messages})
-    }, 3000);
   }
-addNewMessage(userName, content){
-  let oldName = this.state.currentUser.name;
+addNewMessage(type,userName, content){
+  let oldName = this.state.currentUser;
   if(oldName !== userName){
-  this.setState({currentUser:{name:userName}})
+    const userNameCheck = {
+      type:"postNotification",
+      content:`${oldName} has changed their name to ${userName}`
+    }
+    oldName = userName;
+  this.socket.send(JSON.stringify(userNameCheck));
   }
   const message ={
     type,
-    userName:{name:userName},
+    userName,
     content
   }
   this.socket.send(JSON.stringify(message))

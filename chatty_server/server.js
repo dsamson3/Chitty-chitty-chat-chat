@@ -20,13 +20,23 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', function incoming(message){
-      const messageObj = JSON.parse(message);
+    let outGoing;  
+    const messageObj = JSON.parse(message);
+      console.log(message);
+      if(messageObj.type === "postMessage"){
+          outGoing = {
+              type:"incomingMessage",
+              id:uuid(),
+            userName: messageObj.userName,
+            content: messageObj.content}
+      } else if(messageObj.type === "postNotification"){
+          outGoing={type:"incomingNotification",
+            id:uuid(),
+            content: messageObj.content}
+      }
+    
       console.log("[Server] Received Message;", messageObj);
-      const outGoing = {
-          id:uuid(),
-          userName: messageObj.userName.name,
-          content: messageObj.content
-      };
+      console.log(outGoing);
       //broadcast to everybody
     wss.clients.forEach(function each(client){
             client.send(JSON.stringify(outGoing));
