@@ -7,8 +7,9 @@ class App extends Component {
     super(props);
     this.state = {
       userCount:0,
-      currentUser:'Bob',
-      messages: []
+      currentUser:'Anonymous',
+      messages: [],
+      userColour:''
     };
     this.addNewMessage = this.addNewMessage.bind(this);
   }
@@ -26,16 +27,18 @@ class App extends Component {
          { type:receivedMessage.type,
            id: receivedMessage.id,
            userName : receivedMessage.userName,
-          content: receivedMessage.content
-  
-            }]
+          content: receivedMessage.content,
+          userColour: receivedMessage.userColour
+        }]
         switch(receivedMessage.type){
           case "incomingMessage":{
             this.setState({ messages: messages})
             break;
           }
           case "updateUserCount":{
-            this.setState({userCount: receivedMessage.userCount})
+            this.setState({
+              userCount: receivedMessage.userCount,
+            })
             break;
           }
           case "incomingNotification":{
@@ -75,7 +78,7 @@ addNewMessage(type,userName, content){
   <span className="counter">{this.state.userCount} Users Online!</span>
 </nav>
 
-<MessageList messages={this.state.messages} currentUser={this.state.currentUser}/>
+<MessageList messages={this.state.messages} currentUser={this.state.currentUser} userColour={this.state.userColour}/>
 <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage}/>
 </div>
     );

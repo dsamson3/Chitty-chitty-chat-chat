@@ -20,27 +20,35 @@ function broadCast(data){
   });
 }
 
-
+// Generate Random Colour
+function randomColour (){
+  let colour = "#" + (Math.random()*0xFFFFFF<<0).toString(16)
+  return colour;
+}
+console.log(randomColour());
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
 wss.on('connection', (ws) => {
+  let colourAssign = randomColour()
   console.log('Client connected');
   const onlineUsers ={
     type: "updateUserCount",
-    userCount: wss.clients.size
+    userCount: wss.clients.size,
   }
-broadCast(onlineUsers);
+  broadCast(onlineUsers);
   ws.on('message', function incoming(message){
     let outGoing;  
     const messageObj = JSON.parse(message);
-      console.log(message);
-      if(messageObj.type === "postMessage"){
-          outGoing = {
-              type:"incomingMessage",
-              id:uuid(),
-            userName: messageObj.userName,
-            content: messageObj.content}
+    console.log(message);
+    if(messageObj.type === "postMessage"){
+      outGoing = {
+        type:"incomingMessage",
+        id:uuid(),
+        userName: messageObj.userName,
+        content: messageObj.content,
+        userColour: colourAssign
+        }
       } else if(messageObj.type === "postNotification"){
           outGoing={type:"incomingNotification",
             id:uuid(),
@@ -53,6 +61,7 @@ broadCast(onlineUsers);
     broadCast(outGoing);
   
   });
+  
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => {
