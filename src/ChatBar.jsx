@@ -24,6 +24,7 @@ class ChatBar extends Component{
         this.setState({content: e.target.value});
     }
     enterPressed(e) {
+        
         if(e.key === "Enter"){
             this.props.addNewMessage("postMessage",this.state.userName,this.state.content)
             this.setState({content: ""})

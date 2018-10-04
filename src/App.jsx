@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ChatBar from "./ChatBar.jsx"
+import ReactDOM from "react-dom";
 import MessageList from "./MessageList.jsx"
 
 class App extends Component {
@@ -13,8 +14,8 @@ class App extends Component {
     };
     this.addNewMessage = this.addNewMessage.bind(this);
   }
-  
   componentDidMount(){
+   
     const ws = new WebSocket("ws://localhost:3001");
     this.socket = ws;
 
@@ -83,7 +84,6 @@ addNewMessage(type,userName, content){
 <MessageList messages={this.state.messages} currentUser={this.state.currentUser} userColour={this.state.userColour}/>
 <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage}/>
 </div>
-
     );
   }
 }
