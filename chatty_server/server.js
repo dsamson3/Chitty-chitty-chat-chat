@@ -13,6 +13,13 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+//Broadcast helper function
+function broadCast(data){
+  wss.clients.forEach((client)=>{
+    client.send(JSON.stringify(data))
+  });
+}
+
 
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
@@ -23,9 +30,7 @@ wss.on('connection', (ws) => {
     type: "updateUserCount",
     userCount: wss.clients.size
   }
-wss.clients.forEach(function each(client){
-  client.send(JSON.stringify(onlineUsers))
-})
+broadCast(onlineUsers);
   ws.on('message', function incoming(message){
     let outGoing;  
     const messageObj = JSON.parse(message);
@@ -45,10 +50,7 @@ wss.clients.forEach(function each(client){
       console.log("[Server] Received Message;", messageObj);
       console.log(outGoing);
       //broadcast to everybody
-    wss.clients.forEach(function each(client){
-            client.send(JSON.stringify(outGoing));
-    
-    });
+    broadCast(outGoing);
   
   });
 
@@ -59,9 +61,6 @@ wss.clients.forEach(function each(client){
       type: "updateUserCount",
       userCount: wss.clients.size
     }
-  wss.clients.forEach(function each(client){
-    client.send(JSON.stringify(onlineUsers))
-    console.log('Client disconnected');
-  })
+  broadCast(onlineUsers);
   })
 });
