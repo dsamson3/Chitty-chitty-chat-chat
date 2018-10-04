@@ -12,13 +12,9 @@ class App extends Component {
       userColour:''
     };
     this.addNewMessage = this.addNewMessage.bind(this);
-    this.scrollToBottom = this.scrollToBottom.bind(this);
   }
-  scrollToBottom(){
-    this.el.scrollIntoView({behaviour:"smooth"})
-  }
+  
   componentDidMount(){
-    this.scrollToBottom();
     const ws = new WebSocket("ws://localhost:3001");
     this.socket = ws;
 
@@ -26,7 +22,6 @@ class App extends Component {
       console.log('Connected to Server');
     };
       ws.onmessage = (event)=>{
-        this.scrollToBottom();
         const receivedMessage = JSON.parse(event.data);
         console.log("Message", receivedMessage);
         const messages = [...this.state.messages, 
@@ -39,7 +34,6 @@ class App extends Component {
         switch(receivedMessage.type){
           case "incomingMessage":{
             this.setState({ messages: messages})
-            this.scrollToBottom();
             break;
           }
           case "updateUserCount":{
@@ -59,9 +53,7 @@ class App extends Component {
       
     console.log("componentDidMount <App />");
   }
-  componentDidUpdate(){
-    this.scrollToBottom();
-  };
+  
 addNewMessage(type,userName, content){
   let oldName = this.state.currentUser;
   if(oldName !== userName){
@@ -82,7 +74,7 @@ addNewMessage(type,userName, content){
 }
 
   render() {
-    return (<div ref={el => {this.el = el;}}>
+    return (<div>
   <nav className="navbar">
   <a href="/" className="navbar-brand">Chatty</a>
   <span className="counter">{this.state.userCount} Users Online!</span>
@@ -91,6 +83,7 @@ addNewMessage(type,userName, content){
 <MessageList messages={this.state.messages} currentUser={this.state.currentUser} userColour={this.state.userColour}/>
 <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage}/>
 </div>
+
     );
   }
 }
