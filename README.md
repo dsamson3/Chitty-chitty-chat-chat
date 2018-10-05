@@ -6,8 +6,12 @@ Chitty Chitty Chat Chat is a simple single page chat app using ReactJs, babel an
 Chitty Chitty Chat Chat includes, creating a unique usernam that will be asigned a unique identifying colour upon connection,
 join chatroom, send messages, see how many users are online.
 
-### Getting Started
+!["Inital Load"](https://github.com/dsamson3/Chitty-chitty-chat-chat/blob/master/docs/Initial%20load.png?raw=true)
+!["First Chat Message"](https://github.com/dsamson3/Chitty-chitty-chat-chat/blob/master/docs/Hello%20World.png?raw=true)
+!["First Response"](https://github.com/dsamson3/Chitty-chitty-chat-chat/blob/master/docs/Hello%20Back.png?raw=true)
+!["Username Update with persistent colour"](https://github.com/dsamson3/Chitty-chitty-chat-chat/blob/master/docs/Name%20Update.png?raw=true)
 
+### Getting Started
 
 Install the dependencies and start the server.
 
