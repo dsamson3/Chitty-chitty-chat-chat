@@ -11,5 +11,10 @@
   "dependencies": {
     "express": "4.16.3",
     "ws": "6.0.0"
+  },
+  "devDependencies":{
+    "express":"4.16.3",
+    "ws":"6.1.0",
+    "uuid":"3.3.2"
   }
 }

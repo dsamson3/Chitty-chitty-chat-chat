@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 
 class Message extends Component{
     render(){
-      console.log(this.props.type);
       let userColour = this.props.userColour
       if(this.props.type ==="incomingMessage"){
         return ( <main className="messages">

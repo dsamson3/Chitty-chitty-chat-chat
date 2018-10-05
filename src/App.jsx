@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ChatBar from "./ChatBar.jsx"
-import ReactDOM from "react-dom";
 import MessageList from "./MessageList.jsx"
 
 class App extends Component {
@@ -13,6 +12,7 @@ class App extends Component {
       userColour:''
     };
     this.addNewMessage = this.addNewMessage.bind(this);
+    this.nameChange = this.nameChange.bind(this);
   }
   componentDidMount(){
    
@@ -24,14 +24,13 @@ class App extends Component {
     };
       ws.onmessage = (event)=>{
         const receivedMessage = JSON.parse(event.data);
-        console.log("Message", receivedMessage);
         const messages = [...this.state.messages, 
          { type:receivedMessage.type,
            id: receivedMessage.id,
            userName : receivedMessage.userName,
           content: receivedMessage.content,
           userColour: receivedMessage.userColour
-        }]
+        }];
         switch(receivedMessage.type){
           case "incomingMessage":{
             this.setState({ messages: messages})
@@ -52,10 +51,8 @@ class App extends Component {
         
       }
       
-    console.log("componentDidMount <App />");
   }
-  
-addNewMessage(type,userName, content){
+  nameChange(userName){
   let oldName = this.state.currentUser;
   if(oldName !== userName){
     const userNameCheck = {
@@ -63,8 +60,11 @@ addNewMessage(type,userName, content){
       content:`${oldName} has changed their name to ${userName}`
     }
     this.setState({currentUser:userName})
-  this.socket.send(JSON.stringify(userNameCheck));
+    this.socket.send(JSON.stringify(userNameCheck));
   }
+  }
+addNewMessage(type,userName,content){
+  
   const message ={
     type,
     userName,
@@ -75,16 +75,15 @@ addNewMessage(type,userName, content){
 }
 
   render() {
-    return (<div>
-  <nav className="navbar">
-  <a href="/" className="navbar-brand">Chatty</a>
+    return (
+<div>
+<nav className="navbar">
+  <a href="/" className="navbar-brand">Chitty Chitty Chat Chat</a>
   <span className="counter">{this.state.userCount} Users Online!</span>
 </nav>
-
-<MessageList messages={this.state.messages} currentUser={this.state.currentUser} userColour={this.state.userColour}/>
-<ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage}/>
-</div>
-    );
+  <MessageList  messages={this.state.messages} currentUser={this.state.currentUser} userColour={this.state.userColour}/>
+  <ChatBar currentUser={this.state.currentUser} addNewMessage={this.addNewMessage} nameChange={this.nameChange}/>
+</div>);
   }
 }
 export default App;
